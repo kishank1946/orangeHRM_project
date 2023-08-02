@@ -1,0 +1,39 @@
+{
+  "name": "orangehrm_cypress",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress run --spec 'cypress/e2e/login/login.cy.js' --env allure=true",
+    "script": "./scripts/execute-test.sh",
+    "test:staging": "npm run script -- staging \"$@\"",
+    "test:prod": "npm run script -- prod \"$@\"",
+    "test:Login": "npm run clean-allure-result && npm run cy:run:login && npm run report",
+    "test:Open": "npm run clean-allure-result && npm run cy:open && npm run report",
+    "cy:open": "cypress open --env runner='Cypress.env('Base_Url')',allure=true",
+    "cy:run:login": "cypress run --headed --spec 'cypress/e2e/login/**/*.ts' --env runner='Cypress.env('Base_Url')',allure=true",
+    "cypress:run-headed": "cypress run --headed",
+    "allure:report": "allure generate allure-results --clean -o allure-report",
+    "posttest": "npm run allure:report",
+    "clean-allure-result": "rm -rf allure-results",
+    "allure-report": "allure generate allure-results --clean && allure open allure-report",
+    "report": "allure generate allure-results --clean"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kishank1946/orangeHRM_project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kishank1946/orangeHRM_project/issues"
+  },
+  "homepage": "https://github.com/kishank1946/orangeHRM_project#readme",
+  "devDependencies": {
+    "@shelex/cypress-allure-plugin": "^2.40.0",
+    "allure-commandline": "^2.23.1",
+    "cypress": "^12.17.2",
+    "fs-extra": "^11.1.1",
+    "typescript": "^5.1.6"
+  }
+}

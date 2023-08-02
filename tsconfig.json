@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    // "target": "es5",
+    "lib": ["es5", "dom"],
+    "types": ["cypress", "node", "./node_modules/cypress", "./reporter"],
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "target": "es2022",
+    "allowJs": true,
+    "noEmit": true
+  },
+  "include": ["**/*.*"]
+}
