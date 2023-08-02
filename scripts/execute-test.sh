@@ -45,38 +45,6 @@ else
 fi
 
 export CYPRESS_Base_Url=${BASE_URL}
-
-# if [ "$BASE_URL" == "NA" ]
-# then
-#   BASE_URL="https://opensource-demo.orangehrmlive.com"
-
-# if [ "${ENV}" == "staging" ]
-# then
-#   BASE_URL="https://opensource-demo.orangehrmlive.com"
-#   export CYPRESS_Base_Url="https://opensource-demo.orangehrmlive.com/"
-# fi
-# if [ "${ENV}" == "prod" ]
-# then
-#   export CYPRESS_Base_Url="https://opensource-demo.orangehrmlive.com/"
-# fi
-# if [ "${ENV}" == "integration" ]
-# then
-#   export CYPRESS_Base_Url="https://opensource-demo.orangehrmlive.com/"
-# #  export CYPRESS_BASE_URL=${BASE_URL}
-# #  echo "Custom BASE_URL will be used"
-# fi
-# else
-#   export CYPRESS_Base_Url=${BASE_URL}
-#   echo "Custom BASE_URL will be used"
-# fi
-
-# if [ "$BASE_URL" ]
-# then
-#   BASE_URL=${CYPRESS_Base_Url}
-# else
-#   echo "Custom BASE_URL will be used"
-# fi
-
 export CYPRESS_Environment=${ENV}
 
 if [ "${HEADLESS}" != "YES" ]
@@ -120,14 +88,6 @@ echo "***** BASE URL to be used is : ${BASE_URL} *****"
 echo "***** Executing test script started *****"
 
 
-# if [ "$CATEGORY" == "file" ]
-# then
-#   ENV=${ENV}${MODE}${BROWSER} npm run wdio @${TAG}
-# else
-#   echo "RUN ${CATEGORY} tests"
-#   ENV=${ENV} npx cypress run ${CYPRESS_Head_Mode} --spec cypress/e2e/login/**/*.ts --env runner=${CYPRESS_Base_Url},allure=true
-# fi
-
 if [ "$CATEGORY" == "NA" ]
 then
   ENV = ${ENV} npx cypress run ${CYPRESS_Head_Mode} --spec cypress/e2e/**/*.ts --env runner=${CYPRESS_Base_Url},allure=true
@@ -142,18 +102,6 @@ then
 else
   ENV=${ENV} npx cypress run ${CYPRESS_Head_Mode} --browser ${BROWSER} --env runner=${CYPRESS_Base_Url},allure=true
 fi
-
-
-# else
-# if [ ${SUB_CATEGORY} == "All" ]
-# then
-# echo "RUN all ${CATEGORY} tests"
-# ENV=${ENV} npm run test:${CATEGORY}
-#       else
-#       echo "SUBTYPE PRESENT!"
-#       ENV=${ENV} npm run test:${CATEGORY}-${SUB_CATEGORY}
-#       fi
-
 
 
 
