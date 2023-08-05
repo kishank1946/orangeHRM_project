@@ -34,7 +34,7 @@ on:
     branches:
       - main
   # schedule:
-  #   # Runs "everyday at 11 AM IST ( 5:30 UTC timezone)" (see https://crontab.guru)
+  #   # Runs "every day at 11 AM IST ( 5:30 UTC timezone)" (see https://crontab.guru)
   #   - cron: '30 5 * * *'
 
 jobs:
@@ -43,21 +43,18 @@ jobs:
     steps:
         - name: Checkout
           uses: actions/checkout@v3
+
         - uses: actions/setup-node@v3
           with:
             node-version: 18
             
-        - id: install_node
-        uses: actions/setup-node@v2
-        with:
-         node-version: 17
         
-      - name: Cypress install
-        uses: cypress-io/github-action@v5
-        with:
-          # Disable running of tests within install job
-          runTests: false
-          #build: yarn build  
+        - name: Cypress install
+          uses: cypress-io/github-action@v5
+          with:
+            # Disable running of tests within install job
+            runTests: false
+            #build: yarn build  
           
         - name: Run on schedule event
           if: ${{ github.event_name == 'schedule' }}
