@@ -43,7 +43,7 @@ $ export ENV=staging
     - staging(default)
     - prod 
 
-<img width="329" alt="Screenshot 2023-01-21 at 10 39 02 PM" src="https://user-images.githubusercontent.com/85667476/213878859-69c0c445-1c44-442e-b714-173b081ff127.png">
+<img width="329" alt="Screenshot 2023-01-21 at 10 39 02 PM" src="<img width="322" alt="image" src="https://github.com/kishank1946/orangeHRM_project/assets/85667476/c5a6f43e-6f10-4150-baf8-4e8d832b820e">">
 
 3. Select Browser, 2 Browser types are supported
     - CHROME (default)
