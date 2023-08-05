@@ -8,7 +8,7 @@ BROWSER="${4:-CHROME}"
 BASE_URL="${5:-NA}"
 
 AVAILABLE_ENVS="integration staging prod local"
-AVAILABLE_CATEGORY=" file NA Login Open"
+AVAILABLE_CATEGORY=" file NA login Open"
 AVAILABLE_BROWSER=" FILE CHROME FIREFOX"
 
 
@@ -97,7 +97,7 @@ then
   then
     ENV=${ENV} npx cypress open --env runner=${CYPRESS_Base_Url},allure=true
   else
-    ENV=${ENV} npx cypress run ${CYPRESS_Head_Mode} --browser ${BROWSER} --spec cypress/e2e/${CATEGORY}/**/*.ts --env runner=${CYPRESS_Base_Url},allure=true
+    ENV=${ENV} npx cypress run ${CYPRESS_Head_Mode} --browser ${BROWSER} --spec cypress/e2e/${CATEGORY}/**/*.ts --env allure=true,runner=${CYPRESS_Base_Url}
   fi
 else
   ENV=${ENV} npx cypress run ${CYPRESS_Head_Mode} --browser ${BROWSER} --env runner=${CYPRESS_Base_Url},allure=true

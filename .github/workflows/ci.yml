@@ -1,0 +1,116 @@
+name: CI
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Environment Type'
+        default: 'staging'
+        required: true
+        type: choice
+        options:
+          - staging
+          - prod
+      browser:
+        description: 'Browser Type'
+        default: 'CHROME'
+        required: true
+        type: choice
+        options:
+          - CHROME
+          - FIREFOX
+      tag:
+        description: 'File Directory'
+        default: 'login'
+        required: true
+      artifact:
+        description: 'Artifact Reporting'
+        required: false
+        type: boolean
+      gh_page:
+        description: 'gh-pages'
+        required: false
+        type: boolean
+  push:
+    branches:
+      - main
+  schedule:
+    # Runs "everyday at 11 AM IST ( 5:30 UTC timezone)" (see https://crontab.guru)
+    - cron: '30 5 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - uses: actions/setup-node@v3
+          with:
+            node-version: 18
+            
+        - id: install_node
+        uses: actions/setup-node@v2
+        with:
+         node-version: 17
+        
+      - name: Cypress install
+        uses: cypress-io/github-action@v5
+        with:
+          # Disable running of tests within install job
+          runTests: false
+          #build: yarn build  
+          
+        - name: Run on schedule event
+          if: ${{ github.event_name == 'schedule' }}
+          run: npm run test:staging NA Yes CHROME
+          
+        - name: Run on Push
+          if: ${{ github.event_name == 'push' }}
+          run: npm run test:staging NA Yes CHROME
+          # continue-on-error: true
+      
+        - name: Npm with no scheduler
+          if: ${{ github.event_name != 'schedule' && github.event_name != 'push' }}
+          run: npm run test:${{ github.event.inputs.env }} ${{ github.event.inputs.tag }} Yes ${{ github.event.inputs.browser }}
+          
+        - name: Artifact Reporting
+          if: github.event.inputs.artifact == 'true'
+          uses: actions/upload-artifact@v3
+          with:
+            name: allureReport
+            path: ./reports/allure/allure-report
+            
+        - name: Get Allure history
+          if: github.event.inputs.gh_page == 'true'
+          uses: actions/checkout@v2
+          continue-on-error: true
+          with:
+            ref: gh-pages
+            path: gh-pages
+
+        - name: Test marketplace action
+          if: github.event.inputs.gh_page == 'true'
+          uses: simple-elf/allure-report-action@master
+          id: allure-report
+          with:
+            allure_results: build/allure-results
+            gh_pages: gh-pages
+            allure_report: allure-report
+            allure_history: allure-history
+
+        - name: Deploy report to Github Pages
+          if: github.event.inputs.gh_page == 'true'
+          uses: peaceiris/actions-gh-pages@v2
+          env:
+            PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            PUBLISH_BRANCH: gh-pages
+            PUBLISH_DIR: allure-history
+
+        # - name: Post the link to the report
+        #   if: github.event.inputs.gh_page == 'true'
+        #   uses: Sibz/github-status-action@v1
+        #   with: 
+        #     authToken: ${{secrets.GITHUB_TOKEN}}
+        #     context: 'Test report'
+        #     state: 'success'
+        #     sha: ${{ github.event.pull_request.head.sha || github.sha }}
+        #     target_url: simple-elf.github.io/github-allure-history/${{ github.run_number }}
