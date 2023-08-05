@@ -90,7 +90,7 @@ echo "***** Executing test script started *****"
 
 if [ "$CATEGORY" == "NA" ]
 then
-  ENV = ${ENV} npx cypress run ${CYPRESS_Head_Mode} --spec cypress/e2e/**/*.ts --env runner=${CYPRESS_Base_Url},allure=true
+  ENV=${ENV} npx cypress run ${CYPRESS_Head_Mode} --browser ${BROWSER} --spec cypress/e2e/**/*.ts --env runner=${CYPRESS_Base_Url},allure=true
 elif [ "$CATEGORY" != "NA" ]
 then
   if [ "$CATEGORY" == "Open" ]
